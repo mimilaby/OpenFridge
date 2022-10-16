@@ -1,9 +1,9 @@
 <script setup>
-import TheWelcome from "../components/TheWelcome.vue";
+import TableFood from "../components/TableFood.vue"
 </script>
 
 <template>
-  <main>
-    <TheWelcome />
-  </main>
+    <v-container>
+        <TableFood />
+    </v-container>
 </template>
