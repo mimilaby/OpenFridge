@@ -46,3 +46,6 @@ coverage
 
 # Go workspace file
 go.work
+
+
+.env

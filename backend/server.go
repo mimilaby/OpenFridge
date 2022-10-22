@@ -1,17 +1,39 @@
 package main
-
+ 
 import (
+    "database/sql"
     "fmt"
-    "net/http"
+    _ "github.com/lib/pq"
 )
-
+ 
+const (
+    host     = "postgres"
+    port     = 5432
+    user     = "postgres"
+    password = "changeme11"
+    dbname   = "docker"
+)
+ 
 func main() {
-    http.HandleFunc("/", func (w http.ResponseWriter, r *http.Request) {
-        fmt.Fprintf(w, "Welcome to my website!")
-    })
-
-    fs := http.FileServer(http.Dir("static/"))
-    http.Handle("/static/", http.StripPrefix("/static/", fs))
-
-    http.ListenAndServe(":80", nil)
+        // connection string
+    psqlconn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", host, port, user, password, dbname)
+         
+        // open database
+    db, err := sql.Open("postgres", psqlconn)
+    CheckError(err)
+     
+        // close database
+    // defer db.Close()
+ 
+        // check db
+    err = db.Ping()
+    CheckError(err)
+ 
+    fmt.Println("Connected! ")
+}
+ 
+func CheckError(err error) {
+    if err != nil {
+        panic(err)
+    }
 }
