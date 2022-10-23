@@ -1,6 +1,5 @@
 <!-- App.vue -->
 
-
 <!-- <script>
 export default {
     name: "App",

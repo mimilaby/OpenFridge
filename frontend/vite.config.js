@@ -12,4 +12,14 @@ export default defineConfig({
             "@": fileURLToPath(new URL("./src", import.meta.url)),
         },
     },
+    server: {
+        fs: {
+            allow: [
+                // search up for workspace root
+                // searchForWorkspaceRoot(process.cwd()),
+                // your custom rules
+                "..",
+            ],
+        },
+    },
 })
