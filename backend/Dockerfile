@@ -8,10 +8,11 @@ COPY go.mod ./
 COPY go.sum ./
 RUN go mod download
 
-COPY *.go ./
+COPY server/*.go ./server/
 
-RUN go build -o /docker-gs-ping
+WORKDIR /app/server
+RUN go build -o /server
 
 EXPOSE 8080
 
-CMD [ "/docker-gs-ping" ]
+CMD [ "/server" ]

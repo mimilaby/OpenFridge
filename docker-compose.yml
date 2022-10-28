@@ -39,11 +39,8 @@ services:
   postgres:
     container_name: postgres
     image: postgres
-    environment:
-      POSTGRES_DB: docker
-      POSTGRES_USER: ${POSTGRES_USER:-postgres}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme11}
-      PGDATA: /data/postgres
+    env_file:
+      - ./backend/.env
     volumes:
        - postgres:/data/postgres
        - ./backend/db/init.sql:/docker-entrypoint-initdb.d/init.sql
