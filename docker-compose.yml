@@ -43,7 +43,6 @@ services:
       - ./backend/.env
     volumes:
        - postgres:/data/postgres
-       - ./backend/db/init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - 5432:5432
     networks:

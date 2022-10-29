@@ -1,4 +1,4 @@
-package main
+package server
 
 import (
 	"database/sql"
@@ -23,7 +23,7 @@ var (
 	AuthRoutes     routes.AuthRoutes
 )
 
-func init() {
+func Init() {
 	config, err := config.LoadConfig(".")
 
 	if err != nil {
@@ -45,7 +45,7 @@ func init() {
 	server = gin.Default()
 }
 
-func main() {
+func Run() {
 	config, err := config.LoadConfig(".")
 
 	if err != nil {
