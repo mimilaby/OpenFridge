@@ -6,6 +6,7 @@ import (
 	"homeapp/src/config"
 	"homeapp/src/controllers"
 	dbConn "homeapp/src/db/sqlc"
+	"homeapp/src/query"
 	"homeapp/src/routes"
 
 	"log"
@@ -13,11 +14,13 @@ import (
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/lib/pq"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 var (
-	server *gin.Engine
-	db     *dbConn.Queries
+	server      *gin.Engine
+	db          *dbConn.Queries
+	mongoClient *mongo.Client
 
 	AuthController controllers.AuthController
 	AuthRoutes     routes.AuthRoutes
@@ -30,19 +33,15 @@ func Init() {
 		log.Fatalf("could not load config: %v", err)
 	}
 
-	conn, err := sql.Open(config.PostgreDriver, config.PostgresSource)
-	if err != nil {
-		log.Fatalf("could not connect to postgres database: %v", err)
-	}
-
-	db = dbConn.New(conn)
-
-	fmt.Println("PostgreSQL connected successfully...")
+	db = ConnectPostgres(config.PostgreDriver, config.PostgresSource)
+	mongoClient = query.ConnectMongo(config.MongoUsername, config.MongoPassword)
+	// fmt.Println("PostgreSQL connected successfully...")
 
 	AuthController = *controllers.NewAuthController(db)
 	AuthRoutes = routes.NewAuthRoutes(AuthController)
 
 	server = gin.Default()
+	server.SetTrustedProxies(nil)
 }
 
 func Run() {
@@ -64,4 +63,25 @@ func Run() {
 	})
 
 	log.Fatal(server.Run(":" + config.Port))
+}
+
+// connect to postgresql
+func ConnectPostgres(PostgresDriver string, PostgresSource string) *dbConn.Queries {
+
+	// Set client options
+	conn, err := sql.Open(PostgresDriver, PostgresSource)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Check the connection
+	err = conn.Ping()
+
+	if err != nil {
+		log.Fatal(err)
+	}
+	db = dbConn.New(conn)
+	fmt.Println("Connected to PostgreSQL!")
+	return db
 }

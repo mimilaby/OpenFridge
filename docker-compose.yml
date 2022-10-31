@@ -19,13 +19,13 @@ services:
       - 4173:4173
       - 5173:5173
 
-  docker-gs-ping-roach:
+  homeapp-backend:
     depends_on: 
       - postgres
     build:
       context: ./backend/
-    container_name: rest-server
-    hostname: rest-server
+    container_name: homeapp-backend
+    hostname: homeapp-backend
     networks:
       - mynet
     ports:
@@ -49,7 +49,21 @@ services:
       - mynet
     restart: unless-stopped
 
+  mongo:
+    container_name: mongo
+    image: mongo
+    env_file:
+      - ./backend/.env
+    volumes:
+       - mongo:/data/db
+    ports:
+      - 27017:27017
+    networks:
+      - mynet
+    restart: unless-stopped
+
 volumes:
+  mongo:
   postgres:
 
 networks:

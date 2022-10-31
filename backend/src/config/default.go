@@ -8,6 +8,9 @@ type Config struct {
 	PostgreDriver  string `mapstructure:"POSTGRES_DRIVER"`
 	PostgresSource string `mapstructure:"POSTGRES_SOURCE"`
 
+	MongoUsername string `mapstructure:"MONGO_INITDB_ROOT_USERNAME"`
+	MongoPassword string `mapstructure:"MONGO_INITDB_ROOT_PASSWORD"`
+
 	Port string `mapstructure:"PORT"`
 }
 
