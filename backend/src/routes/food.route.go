@@ -18,4 +18,5 @@ func (rc *FoodRoutes) FoodRoute(rg *gin.RouterGroup) {
 
 	router := rg.Group("/food")
 	router.POST("/add", rc.foodController.AddFood)
+	router.GET("/get_available", rc.foodController.GetFoodAvailable)
 }

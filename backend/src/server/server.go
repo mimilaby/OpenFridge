@@ -63,11 +63,11 @@ func Run() {
 	})
 
 	AuthRoutes.AuthRoute(router)
+	FoodRoutes.FoodRoute(router)
+
 	server.NoRoute(func(ctx *gin.Context) {
 		ctx.JSON(http.StatusNotFound, gin.H{"status": "fail", "message": fmt.Sprintf("Route %s not found", ctx.Request.URL)})
 	})
-
-	FoodRoutes.FoodRoute(router)
 
 	log.Fatal(server.Run(":" + config.Port))
 }

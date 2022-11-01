@@ -1,0 +1,12 @@
+
+### Get all food with amount>0 
+GET http://localhost:8000/api/food/get_available
+
+### Add food to db
+POST http://localhost:8000/api/food/add
+Content-Type: application/json
+{
+  "Name": "food 3",
+  "Description": "test",
+  "Price": "50"
+}

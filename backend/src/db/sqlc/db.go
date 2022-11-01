@@ -33,6 +33,9 @@ func Prepare(ctx context.Context, db DBTX) (*Queries, error) {
 	if q.deleteUserStmt, err = db.PrepareContext(ctx, deleteUser); err != nil {
 		return nil, fmt.Errorf("error preparing query DeleteUser: %w", err)
 	}
+	if q.getFoodAvailableStmt, err = db.PrepareContext(ctx, getFoodAvailable); err != nil {
+		return nil, fmt.Errorf("error preparing query GetFoodAvailable: %w", err)
+	}
 	if q.getUserByEmailStmt, err = db.PrepareContext(ctx, getUserByEmail); err != nil {
 		return nil, fmt.Errorf("error preparing query GetUserByEmail: %w", err)
 	}
@@ -63,6 +66,11 @@ func (q *Queries) Close() error {
 	if q.deleteUserStmt != nil {
 		if cerr := q.deleteUserStmt.Close(); cerr != nil {
 			err = fmt.Errorf("error closing deleteUserStmt: %w", cerr)
+		}
+	}
+	if q.getFoodAvailableStmt != nil {
+		if cerr := q.getFoodAvailableStmt.Close(); cerr != nil {
+			err = fmt.Errorf("error closing getFoodAvailableStmt: %w", cerr)
 		}
 	}
 	if q.getUserByEmailStmt != nil {
@@ -122,27 +130,29 @@ func (q *Queries) queryRow(ctx context.Context, stmt *sql.Stmt, query string, ar
 }
 
 type Queries struct {
-	db                 DBTX
-	tx                 *sql.Tx
-	addFoodStmt        *sql.Stmt
-	createUserStmt     *sql.Stmt
-	deleteUserStmt     *sql.Stmt
-	getUserByEmailStmt *sql.Stmt
-	getUserByIdStmt    *sql.Stmt
-	listUsersStmt      *sql.Stmt
-	updateUserStmt     *sql.Stmt
+	db                   DBTX
+	tx                   *sql.Tx
+	addFoodStmt          *sql.Stmt
+	createUserStmt       *sql.Stmt
+	deleteUserStmt       *sql.Stmt
+	getFoodAvailableStmt *sql.Stmt
+	getUserByEmailStmt   *sql.Stmt
+	getUserByIdStmt      *sql.Stmt
+	listUsersStmt        *sql.Stmt
+	updateUserStmt       *sql.Stmt
 }
 
 func (q *Queries) WithTx(tx *sql.Tx) *Queries {
 	return &Queries{
-		db:                 tx,
-		tx:                 tx,
-		addFoodStmt:        q.addFoodStmt,
-		createUserStmt:     q.createUserStmt,
-		deleteUserStmt:     q.deleteUserStmt,
-		getUserByEmailStmt: q.getUserByEmailStmt,
-		getUserByIdStmt:    q.getUserByIdStmt,
-		listUsersStmt:      q.listUsersStmt,
-		updateUserStmt:     q.updateUserStmt,
+		db:                   tx,
+		tx:                   tx,
+		addFoodStmt:          q.addFoodStmt,
+		createUserStmt:       q.createUserStmt,
+		deleteUserStmt:       q.deleteUserStmt,
+		getFoodAvailableStmt: q.getFoodAvailableStmt,
+		getUserByEmailStmt:   q.getUserByEmailStmt,
+		getUserByIdStmt:      q.getUserByIdStmt,
+		listUsersStmt:        q.listUsersStmt,
+		updateUserStmt:       q.updateUserStmt,
 	}
 }

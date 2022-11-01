@@ -46,3 +46,14 @@ func (fc *FoodController) AddFood(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusCreated, gin.H{"status": "success", "data": gin.H{"food": addedFood}})
 }
+
+func (fc *FoodController) GetFoodAvailable(ctx *gin.Context) {
+	foods, err := fc.db.GetFoodAvailable(ctx)
+
+	if err != nil {
+		ctx.JSON(http.StatusBadGateway, err.Error())
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"status": "success", "data": gin.H{"foods": foods}})
+}

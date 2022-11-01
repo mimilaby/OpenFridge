@@ -67,3 +67,43 @@ func (q *Queries) AddFood(ctx context.Context, arg AddFoodParams) (Food, error) 
 	)
 	return i, err
 }
+
+const getFoodAvailable = `-- name: GetFoodAvailable :many
+SELECT id, name, description, price, calories, weight, amount, weight_per_amount, photo, created_at, updated_at FROM food
+WHERE amount > 0
+`
+
+func (q *Queries) GetFoodAvailable(ctx context.Context) ([]Food, error) {
+	rows, err := q.query(ctx, q.getFoodAvailableStmt, getFoodAvailable)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Food
+	for rows.Next() {
+		var i Food
+		if err := rows.Scan(
+			&i.ID,
+			&i.Name,
+			&i.Description,
+			&i.Price,
+			&i.Calories,
+			&i.Weight,
+			&i.Amount,
+			&i.WeightPerAmount,
+			&i.Photo,
+			&i.CreatedAt,
+			&i.UpdatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}

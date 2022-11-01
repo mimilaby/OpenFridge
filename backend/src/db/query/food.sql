@@ -13,3 +13,7 @@ INSERT INTO food (
   $1, $2, $3, $4, $5, $6, $7, $8, $9
 )
 RETURNING *;
+
+-- name: GetFoodAvailable :many
+SELECT * FROM food
+WHERE amount > 0;
