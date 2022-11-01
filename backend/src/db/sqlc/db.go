@@ -24,6 +24,9 @@ func New(db DBTX) *Queries {
 func Prepare(ctx context.Context, db DBTX) (*Queries, error) {
 	q := Queries{db: db}
 	var err error
+	if q.addFoodStmt, err = db.PrepareContext(ctx, addFood); err != nil {
+		return nil, fmt.Errorf("error preparing query AddFood: %w", err)
+	}
 	if q.createUserStmt, err = db.PrepareContext(ctx, createUser); err != nil {
 		return nil, fmt.Errorf("error preparing query CreateUser: %w", err)
 	}
@@ -47,6 +50,11 @@ func Prepare(ctx context.Context, db DBTX) (*Queries, error) {
 
 func (q *Queries) Close() error {
 	var err error
+	if q.addFoodStmt != nil {
+		if cerr := q.addFoodStmt.Close(); cerr != nil {
+			err = fmt.Errorf("error closing addFoodStmt: %w", cerr)
+		}
+	}
 	if q.createUserStmt != nil {
 		if cerr := q.createUserStmt.Close(); cerr != nil {
 			err = fmt.Errorf("error closing createUserStmt: %w", cerr)
@@ -116,6 +124,7 @@ func (q *Queries) queryRow(ctx context.Context, stmt *sql.Stmt, query string, ar
 type Queries struct {
 	db                 DBTX
 	tx                 *sql.Tx
+	addFoodStmt        *sql.Stmt
 	createUserStmt     *sql.Stmt
 	deleteUserStmt     *sql.Stmt
 	getUserByEmailStmt *sql.Stmt
@@ -128,6 +137,7 @@ func (q *Queries) WithTx(tx *sql.Tx) *Queries {
 	return &Queries{
 		db:                 tx,
 		tx:                 tx,
+		addFoodStmt:        q.addFoodStmt,
 		createUserStmt:     q.createUserStmt,
 		deleteUserStmt:     q.deleteUserStmt,
 		getUserByEmailStmt: q.getUserByEmailStmt,

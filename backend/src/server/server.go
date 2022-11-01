@@ -1,12 +1,12 @@
 package server
 
 import (
+	"context"
 	"database/sql"
 	"fmt"
 	"homeapp/src/config"
 	"homeapp/src/controllers"
 	dbConn "homeapp/src/db/sqlc"
-	"homeapp/src/query"
 	"homeapp/src/routes"
 
 	"log"
@@ -15,6 +15,7 @@ import (
 	"github.com/gin-gonic/gin"
 	_ "github.com/lib/pq"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 var (
@@ -24,6 +25,8 @@ var (
 
 	AuthController controllers.AuthController
 	AuthRoutes     routes.AuthRoutes
+	FoodController controllers.FoodController
+	FoodRoutes     routes.FoodRoutes
 )
 
 func Init() {
@@ -34,11 +37,13 @@ func Init() {
 	}
 
 	db = ConnectPostgres(config.PostgreDriver, config.PostgresSource)
-	mongoClient = query.ConnectMongo(config.MongoUsername, config.MongoPassword)
-	// fmt.Println("PostgreSQL connected successfully...")
+	mongoClient = ConnectMongo(config.MongoUsername, config.MongoPassword)
 
 	AuthController = *controllers.NewAuthController(db)
 	AuthRoutes = routes.NewAuthRoutes(AuthController)
+
+	FoodController = *controllers.NewFoodController(db)
+	FoodRoutes = routes.NewFoodRoutes(FoodController)
 
 	server = gin.Default()
 	server.SetTrustedProxies(nil)
@@ -62,6 +67,8 @@ func Run() {
 		ctx.JSON(http.StatusNotFound, gin.H{"status": "fail", "message": fmt.Sprintf("Route %s not found", ctx.Request.URL)})
 	})
 
+	FoodRoutes.FoodRoute(router)
+
 	log.Fatal(server.Run(":" + config.Port))
 }
 
@@ -84,4 +91,33 @@ func ConnectPostgres(PostgresDriver string, PostgresSource string) *dbConn.Queri
 	db = dbConn.New(conn)
 	fmt.Println("Connected to PostgreSQL!")
 	return db
+}
+
+func ConnectMongo(mongoUsername string, mongoPassword string) *mongo.Client {
+	// Authentication
+	credentials := options.Credential{
+		AuthSource: "admin",
+		Username:   mongoUsername,
+		Password:   mongoPassword,
+	}
+	// Set client options
+	clientOptions := options.Client().ApplyURI("mongodb://localhost:27017").
+		SetAuth(credentials)
+
+	// Connect to MongoDB
+	client, err := mongo.Connect(context.TODO(), clientOptions)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Check the connection
+	err = client.Ping(context.TODO(), nil)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println("Connected to MongoDB!")
+	return client
 }
