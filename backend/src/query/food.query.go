@@ -13,14 +13,14 @@ type Food struct {
 	Name string `json:"name"`
 }
 
+// Get food from mongoDB
 func GetFood(client *mongo.Client, name string) (Food, error) {
-	collection := client.Database("food").Collection("food")
-	filter := bson.D{{"name", name}}
-	var result Food
-	err := collection.FindOne(context.Background(), filter).Decode(&result)
+	var food Food
+	collection := client.Database("homeapp").Collection("food")
+	err := collection.FindOne(context.Background(), bson.M{"name": name}).Decode(&food)
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println("Found a single document: ", result)
-	return result, nil
+	fmt.Println(food)
+	return food, nil
 }

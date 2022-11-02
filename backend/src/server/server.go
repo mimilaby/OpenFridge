@@ -29,6 +29,7 @@ var (
 	FoodRoutes     routes.FoodRoutes
 )
 
+// Init initializes the server
 func Init() {
 	config, err := config.LoadConfig(".")
 
@@ -49,6 +50,7 @@ func Init() {
 	server.SetTrustedProxies(nil)
 }
 
+// Run runs the server
 func Run() {
 	config, err := config.LoadConfig(".")
 
@@ -93,6 +95,7 @@ func ConnectPostgres(PostgresDriver string, PostgresSource string) *dbConn.Queri
 	return db
 }
 
+// Connect to MongoDB
 func ConnectMongo(mongoUsername string, mongoPassword string) *mongo.Client {
 	// Authentication
 	credentials := options.Credential{

@@ -1,9 +1,11 @@
+// Load config
 package config
 
 import (
 	"github.com/spf13/viper"
 )
 
+// Config struct holds the config values read
 type Config struct {
 	PostgreDriver  string `mapstructure:"POSTGRES_DRIVER"`
 	PostgresSource string `mapstructure:"POSTGRES_SOURCE"`
@@ -14,6 +16,7 @@ type Config struct {
 	Port string `mapstructure:"PORT"`
 }
 
+// LoadConfig loads .env file from the given path
 func LoadConfig(path string) (config Config, err error) {
 	viper.AddConfigPath(path)
 	viper.SetConfigType("env")
