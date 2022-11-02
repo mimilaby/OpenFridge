@@ -1,4 +1,6 @@
 <script setup>
+/*global defineProps*/
+
 defineProps({
     msg: {
         type: String,

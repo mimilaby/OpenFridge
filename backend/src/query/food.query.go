@@ -1,3 +1,4 @@
+// Package query handles the queries to the api
 package query
 
 import (
@@ -9,6 +10,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
+// Food struct holds the food data
 type Food struct {
 	Name string `json:"name"`
 }

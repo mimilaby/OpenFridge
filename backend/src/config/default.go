@@ -1,4 +1,4 @@
-// Load config
+// Package config handles the configuration
 package config
 
 import (

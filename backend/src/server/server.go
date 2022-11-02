@@ -14,7 +14,6 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	_ "github.com/lib/pq"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -24,10 +23,15 @@ var (
 	db          *dbConn.Queries
 	mongoClient *mongo.Client
 
+	// AuthController holds the auth controller
 	AuthController controllers.AuthController
-	AuthRoutes     routes.AuthRoutes
+	// AuthRoutes holds the auth routes
+	AuthRoutes routes.AuthRoutes
+
+	// FoodController holds the food controller
 	FoodController controllers.FoodController
-	FoodRoutes     routes.FoodRoutes
+	// FoodRoutes holds the food routes
+	FoodRoutes routes.FoodRoutes
 )
 
 // Init initializes the server

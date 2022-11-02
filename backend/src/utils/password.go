@@ -1,4 +1,4 @@
-// utils package contains all the helper functions
+// Package utils contains all the helper functions
 package utils
 
 import "golang.org/x/crypto/bcrypt"
@@ -9,7 +9,7 @@ func HashPassword(password string) string {
 	return string(hashedPassword)
 }
 
-// ComparePasswords compares hashed passwords
+// ComparePassword compares hashed passwords
 func ComparePassword(hashedPassword string, candidatePassword string) error {
 	return bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(candidatePassword))
 }

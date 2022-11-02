@@ -1,3 +1,4 @@
+// Package routes handles all the routes for the application
 package routes
 
 import (
@@ -11,7 +12,7 @@ type FoodRoutes struct {
 	foodController controllers.FoodController
 }
 
-// NewFoodController connects the food controller to the food routes
+// NewFoodRoutes connects the food controller to the food routes
 func NewFoodRoutes(foodController controllers.FoodController) FoodRoutes {
 	return FoodRoutes{foodController}
 }
