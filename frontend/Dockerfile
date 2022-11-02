@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM node:lts-alpine AS Base
+FROM node:lts-alpine AS base
 
 # Development stage
 # ---------------------------------------

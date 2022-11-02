@@ -1,3 +1,4 @@
+// Package server handles the server
 package server
 
 import (
@@ -74,7 +75,7 @@ func Run() {
 	log.Fatal(server.Run(":" + config.Port))
 }
 
-// connect to postgresql
+// ConnectPostgres connect to postgresql
 func ConnectPostgres(PostgresDriver string, PostgresSource string) *dbConn.Queries {
 
 	// Set client options
@@ -95,7 +96,7 @@ func ConnectPostgres(PostgresDriver string, PostgresSource string) *dbConn.Queri
 	return db
 }
 
-// Connect to MongoDB
+// ConnectMongo connect to MongoDB
 func ConnectMongo(mongoUsername string, mongoPassword string) *mongo.Client {
 	// Authentication
 	credentials := options.Credential{

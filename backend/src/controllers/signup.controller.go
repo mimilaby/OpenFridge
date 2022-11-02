@@ -1,4 +1,4 @@
-// Controllers handle the request and response
+// Package controllers handle the request and response
 package controllers
 
 import (
@@ -11,12 +11,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// Connection to the database
+// AuthController holds connection to the database
 type AuthController struct {
 	db *db.Queries
 }
 
-// Connect Controller to the database
+// NewAuthController connect Controller to the database
 func NewAuthController(db *db.Queries) *AuthController {
 	return &AuthController{db}
 }

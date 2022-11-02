@@ -11,12 +11,12 @@ type FoodRoutes struct {
 	foodController controllers.FoodController
 }
 
-// FoodController struct holds the food controller
+// NewFoodController connects the food controller to the food routes
 func NewFoodRoutes(foodController controllers.FoodController) FoodRoutes {
 	return FoodRoutes{foodController}
 }
 
-// Add the food routes to the router
+// FoodRoute add the food routes to the router
 func (rc *FoodRoutes) FoodRoute(rg *gin.RouterGroup) {
 
 	router := rg.Group("/food")

@@ -13,7 +13,7 @@ type Food struct {
 	Name string `json:"name"`
 }
 
-// Get food from mongoDB
+// GetFood get food from mongoDB
 func GetFood(client *mongo.Client, name string) (Food, error) {
 	var food Food
 	collection := client.Database("homeapp").Collection("food")
