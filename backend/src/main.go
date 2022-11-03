@@ -2,7 +2,7 @@
 package main
 
 import (
-	"homeapp/src/server"
+	"openfridge/src/server"
 )
 
 func init() {

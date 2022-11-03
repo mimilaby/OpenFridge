@@ -1,4 +1,4 @@
-module homeapp
+module openfridge
 
 go 1.19
 

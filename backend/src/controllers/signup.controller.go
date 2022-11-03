@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"time"
 
-	db "homeapp/src/db/sqlc"
-	"homeapp/src/utils"
+	db "openfridge/src/db/sqlc"
+	"openfridge/src/utils"
 
 	"github.com/gin-gonic/gin"
 )

@@ -2,7 +2,7 @@
 package routes
 
 import (
-	"homeapp/src/controllers"
+	"openfridge/src/controllers"
 
 	"github.com/gin-gonic/gin"
 )

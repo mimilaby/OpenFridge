@@ -1,12 +1,11 @@
 version: '3.8'
 
 services:
-  homeapp-frontend:
+  frontend:
     build: 
       context: ./frontend
       dockerfile: Dockerfile
       target: development
-    container_name: homeapp-frontend
     restart: always
     environment:
       - NODE_ENV=development
@@ -19,13 +18,12 @@ services:
       - 4173:4173
       - 5173:5173
 
-  homeapp-backend:
+  backend:
     depends_on: 
       - postgres
     build:
       context: ./backend/
-    container_name: homeapp-backend
-    hostname: homeapp-backend
+    hostname: backend
     networks:
       - mynet
     ports:

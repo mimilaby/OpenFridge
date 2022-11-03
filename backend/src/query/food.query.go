@@ -18,7 +18,7 @@ type Food struct {
 // GetFood get food from mongoDB
 func GetFood(client *mongo.Client, name string) (Food, error) {
 	var food Food
-	collection := client.Database("homeapp").Collection("food")
+	collection := client.Database("openfridge").Collection("food")
 	err := collection.FindOne(context.Background(), bson.M{"name": name}).Decode(&food)
 	if err != nil {
 		log.Fatal(err)

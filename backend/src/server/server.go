@@ -5,23 +5,25 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"homeapp/src/config"
-	"homeapp/src/controllers"
-	dbConn "homeapp/src/db/sqlc"
-	"homeapp/src/routes"
+	"openfridge/src/config"
+	"openfridge/src/controllers"
+	dbConn "openfridge/src/db/sqlc"
+	"openfridge/src/routes"
 
 	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	// pq is the postgres driver788
+	_ "github.com/lib/pq"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 var (
-	server      *gin.Engine
-	db          *dbConn.Queries
-	mongoClient *mongo.Client
+	server *gin.Engine
+	db     *dbConn.Queries
+	// mongoClient *mongo.Client
 
 	// AuthController holds the auth controller
 	AuthController controllers.AuthController
@@ -43,7 +45,7 @@ func Init() {
 	}
 
 	db = ConnectPostgres(config.PostgreDriver, config.PostgresSource)
-	mongoClient = ConnectMongo(config.MongoUsername, config.MongoPassword)
+	// mongoClient = ConnectMongo(config.MongoUsername, config.MongoPassword)
 
 	AuthController = *controllers.NewAuthController(db)
 	AuthRoutes = routes.NewAuthRoutes(AuthController)

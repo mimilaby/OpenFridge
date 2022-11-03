@@ -6,6 +6,6 @@
 
 import {loadFonts} from "./webfontloader"
 
-export function registerPlugins() {
+export default function registerPlugins() {
     loadFonts()
 }
