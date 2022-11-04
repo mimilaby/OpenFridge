@@ -1,32 +1,5 @@
 <!-- App.vue -->
 
-<!-- <script>
-export default {
-    name: "App",
-    data() {
-        return {
-            drawer: false,
-            group: null,
-            items: [
-                {
-                    title: "Home",
-                    to: "/home",
-                },
-                {
-                    title: "About",
-                    to: "/about",
-                },
-            ],
-        }
-    },
-    watch: {
-        group() {
-            this.drawer = false
-        },
-    },
-}
-</script> -->
-
 <template>
     <v-app>
         <MyAppBar />
@@ -41,7 +14,7 @@ export default {
             <v-container
                 class="text-overline d-flex align-center justify-space-between"
             >
-                <div>Copyright &copy; 2022 HomeApp</div>
+                <div>Copyright &copy; 2022 OpenFridge</div>
                 <v-icon icon="mdi-vuetify" size="x-large"></v-icon>
             </v-container>
         </v-footer>
