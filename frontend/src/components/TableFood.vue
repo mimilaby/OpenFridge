@@ -1,5 +1,5 @@
 <template>
-    <v-table fixed-header="false" height="300px">
+    <v-table fixed-header height="300px">
         <thead>
             <tr>
                 <th class="text-left">Name</th>
@@ -7,9 +7,9 @@
             </tr>
         </thead>
         <tbody>
-            <tr v-for="item in desserts" :key="item.name">
+            <tr v-for="item in foods" :key="item.name">
                 <td>{{ item.name }}</td>
-                <td>{{ item.calories }}</td>
+                <td>{{ item.price }}</td>
             </tr>
         </tbody>
     </v-table>
@@ -19,49 +19,20 @@
 export default {
     data() {
         return {
-            desserts: [
-                {
-                    name: "Frozen Yogurt",
-                    calories: 159,
-                },
-                {
-                    name: "Ice cream sandwich",
-                    calories: 237,
-                },
-                {
-                    name: "Eclair",
-                    calories: 262,
-                },
-                {
-                    name: "Cupcake",
-                    calories: 305,
-                },
-                {
-                    name: "Gingerbread",
-                    calories: 356,
-                },
-                {
-                    name: "Jelly bean",
-                    calories: 375,
-                },
-                {
-                    name: "Lollipop",
-                    calories: 392,
-                },
-                {
-                    name: "Honeycomb",
-                    calories: 408,
-                },
-                {
-                    name: "Donut",
-                    calories: 452,
-                },
-                {
-                    name: "KitKat",
-                    calories: 518,
-                },
-            ],
+            foods: [],
         }
+    },
+    methods: {
+        async getFoods() {
+            const response = await fetch("api/food/get_available")
+            const data = await response.json()
+            return data
+        },
+    },
+    async mounted() {
+        const foods = await this.getFoods()
+        this.foods = foods.data.foods
+        console.log(this.foods)
     },
 }
 </script>

@@ -7,7 +7,7 @@ POST http://localhost:8000/api/food/add
 Content-Type: application/json
 
 {
-  "Name": "food 3",
+  "Name": "food 6",
   "Description": "test",
-  "Price": "50"
+  "Price": "0"
 }

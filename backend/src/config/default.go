@@ -10,6 +10,7 @@ type Config struct {
 	PostgreDriver  string `mapstructure:"POSTGRES_DRIVER"`
 	PostgresSource string `mapstructure:"POSTGRES_SOURCE"`
 
+	MongoURL      string `mapstructure:"MONGO_URL"`
 	MongoUsername string `mapstructure:"MONGO_INITDB_ROOT_USERNAME"`
 	MongoPassword string `mapstructure:"MONGO_INITDB_ROOT_PASSWORD"`
 
@@ -28,6 +29,8 @@ func LoadConfig(path string) (config Config, err error) {
 	if err != nil {
 		return
 	}
+	viper.SetEnvPrefix("openfridge")
+	viper.BindEnv("POSTGRES_DRIVER")
 
 	err = viper.Unmarshal(&config)
 	return

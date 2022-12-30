@@ -13,7 +13,9 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+
 	// pq is the postgres driver788
 	_ "github.com/lib/pq"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -21,9 +23,9 @@ import (
 )
 
 var (
-	server *gin.Engine
-	db     *dbConn.Queries
-	// mongoClient *mongo.Client
+	server      *gin.Engine
+	db          *dbConn.Queries
+	mongoClient *mongo.Client
 
 	// AuthController holds the auth controller
 	AuthController controllers.AuthController
@@ -39,13 +41,12 @@ var (
 // Init initializes the server
 func Init() {
 	config, err := config.LoadConfig(".")
-
 	if err != nil {
 		log.Fatalf("could not load config: %v", err)
 	}
 
 	db = ConnectPostgres(config.PostgreDriver, config.PostgresSource)
-	// mongoClient = ConnectMongo(config.MongoUsername, config.MongoPassword)
+	mongoClient = ConnectMongo(config.MongoURL, config.MongoUsername, config.MongoPassword)
 
 	AuthController = *controllers.NewAuthController(db)
 	AuthRoutes = routes.NewAuthRoutes(AuthController)
@@ -53,7 +54,11 @@ func Init() {
 	FoodController = *controllers.NewFoodController(db)
 	FoodRoutes = routes.NewFoodRoutes(FoodController)
 
+	corsConfig := cors.DefaultConfig()
+	corsConfig.AllowOrigins = []string{"http://localhost:5173"}
+
 	server = gin.Default()
+	server.Use(cors.New(corsConfig))
 	server.SetTrustedProxies(nil)
 }
 
@@ -103,7 +108,7 @@ func ConnectPostgres(PostgresDriver string, PostgresSource string) *dbConn.Queri
 }
 
 // ConnectMongo connect to MongoDB
-func ConnectMongo(mongoUsername string, mongoPassword string) *mongo.Client {
+func ConnectMongo(mongoURL string, mongoUsername string, mongoPassword string) *mongo.Client {
 	// Authentication
 	credentials := options.Credential{
 		AuthSource: "admin",
@@ -111,7 +116,7 @@ func ConnectMongo(mongoUsername string, mongoPassword string) *mongo.Client {
 		Password:   mongoPassword,
 	}
 	// Set client options
-	clientOptions := options.Client().ApplyURI("mongodb://localhost:27017").
+	clientOptions := options.Client().ApplyURI(mongoURL).
 		SetAuth(credentials)
 
 	// Connect to MongoDB
