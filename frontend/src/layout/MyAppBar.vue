@@ -11,7 +11,7 @@
                     class="mr-3"
                     image="https://cdn.vuetifyjs.com/docs/images/logos/v.png"
                 />
-                HomeApp
+                OpenFridge
             </div>
         </v-app-bar-title>
 

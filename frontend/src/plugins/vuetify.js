@@ -40,6 +40,9 @@ export default createVuetify({
             dark: {
                 dark: true,
                 colors: {
+                    background: "#121212",
+                    surface: "#1E1E1E",
+                    accent: "#2E2E2E",
                     primary: "#1697f6",
                 },
             },
@@ -48,6 +51,7 @@ export default createVuetify({
                 colors: {
                     background: "#FFFFFF",
                     surface: "#F0F0F6",
+                    accent: "#E0E0E6",
                     primary: "#2f90b9",
                     "primary-darken-1": "#3700B3",
                     secondary: "#03DAC6",
