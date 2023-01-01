@@ -23,6 +23,9 @@
         <v-btn icon>
             <v-icon>mdi-dots-vertical</v-icon>
         </v-btn>
+        <v-btn icon @click="toggleTheme">
+            <v-icon>mdi-theme-light-dark</v-icon>
+        </v-btn>
     </v-app-bar>
     <v-navigation-drawer v-model="drawer" bottom permanent>
         <v-list>
@@ -39,6 +42,7 @@
 </template>
 
 <script>
+import {useTheme} from "vuetify"
 export default {
     name: "MyAppBar",
     data() {
@@ -61,6 +65,15 @@ export default {
         group() {
             this.drawer = false
         },
+    },
+    setup() {
+        const theme = useTheme()
+        const toggleTheme = () => {
+            theme.global.name.value = theme.global.current.value.dark
+                ? "light"
+                : "dark"
+        }
+        return {toggleTheme}
     },
 }
 </script>
