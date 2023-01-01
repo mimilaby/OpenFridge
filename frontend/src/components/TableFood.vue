@@ -1,38 +1,38 @@
 <template>
-    <v-table fixed-header height="300px">
-        <thead>
-            <tr>
-                <th class="text-left">Name</th>
-                <th class="text-left">Calories</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr v-for="item in foods" :key="item.name">
-                <td>{{ item.name }}</td>
-                <td>{{ item.price }}</td>
-            </tr>
-        </tbody>
-    </v-table>
+    <v-hover v-slot="{isHovering, props}">
+        <v-card
+            class="rounded-xl"
+            v-bind="props"
+            :elevation="isHovering ? 24 : 6"
+            color="accent"
+        >
+            <v-card-title class="text-center" color="#AAA">
+                Available foods
+            </v-card-title>
+            <v-table fixed-header height="300px" class="rounded-0">
+                <thead>
+                    <tr>
+                        <th class="text-left" v-for="head in heads" :key="head">
+                            {{ head }}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="item in items" :key="item.name">
+                        <td v-for="text in item" :key="text">{{ text }}</td>
+                    </tr>
+                </tbody>
+            </v-table>
+        </v-card>
+    </v-hover>
 </template>
 
 <script>
 export default {
-    data() {
-        return {
-            foods: [],
-        }
-    },
-    methods: {
-        async getFoods() {
-            const response = await fetch("api/food/get_available")
-            const data = await response.json()
-            return data
-        },
-    },
-    async mounted() {
-        const foods = await this.getFoods()
-        this.foods = foods.data.foods
-        console.log(this.foods)
+    props: ["items", "heads"],
+    created() {
+        // console.log(this.heads)
+        // console.log(this.items)
     },
 }
 </script>
