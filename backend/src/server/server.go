@@ -23,9 +23,9 @@ import (
 )
 
 var (
-	server      *gin.Engine
-	db          *dbConn.Queries
-	mongoClient *mongo.Client
+	server *gin.Engine
+	db     *dbConn.Queries
+	// mongoClient *mongo.Client
 
 	// AuthController holds the auth controller
 	AuthController controllers.AuthController
@@ -46,7 +46,7 @@ func Init() {
 	}
 
 	db = ConnectPostgres(config.PostgreDriver, config.PostgresSource)
-	mongoClient = ConnectMongo(config.MongoURL, config.MongoUsername, config.MongoPassword)
+	// mongoClient = ConnectMongo(config.MongoURL, config.MongoUsername, config.MongoPassword)
 
 	AuthController = *controllers.NewAuthController(db)
 	AuthRoutes = routes.NewAuthRoutes(AuthController)
