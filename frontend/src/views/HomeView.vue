@@ -38,7 +38,6 @@ export default {
         const foods = await this.getFoods()
         this.foods_all = foods.data.foods
         console.log(this.foods_all)
-
         this.foods_all.map((item) => {
             let item_general = {}
             for (const key in this.food_general_format) {
